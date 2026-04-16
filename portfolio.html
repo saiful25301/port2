@@ -1,0 +1,883 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>grüetzi. i'm adrian.</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0d0d0d;
+    --text: #e8e8e8;
+    --muted: #888;
+    --accent: #fff;
+    --border: rgba(255,255,255,0.08);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    line-height: 1.6;
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  /* Custom cursor */
+  .cursor {
+    width: 10px; height: 10px;
+    background: #fff;
+    border-radius: 50%;
+    position: fixed;
+    top: 0; left: 0;
+    pointer-events: none;
+    z-index: 9999;
+    transition: transform 0.15s ease, width 0.2s, height 0.2s, background 0.2s;
+    transform: translate(-50%, -50%);
+  }
+  .cursor-ring {
+    width: 36px; height: 36px;
+    border: 1px solid rgba(255,255,255,0.4);
+    border-radius: 50%;
+    position: fixed;
+    top: 0; left: 0;
+    pointer-events: none;
+    z-index: 9998;
+    transform: translate(-50%, -50%);
+    transition: left 0.12s ease, top 0.12s ease, width 0.3s, height 0.3s, border-color 0.3s;
+  }
+  body:hover .cursor { opacity: 1; }
+
+  /* Scroll reveal */
+  .reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ── HERO ── */
+  #hero {
+    padding: 7rem 6vw 5rem;
+    max-width: 900px;
+    position: relative;
+  }
+
+  .hero-greeting {
+    font-family: 'Space Mono', monospace;
+    font-size: clamp(2.8rem, 7vw, 5.5rem);
+    font-weight: 700;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    color: #fff;
+    margin-bottom: 1.8rem;
+  }
+
+  .hero-greeting span {
+    display: block;
+    animation: slideIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+  .hero-greeting span:nth-child(1) { animation-delay: 0.1s; }
+  .hero-greeting span:nth-child(2) { animation-delay: 0.25s; }
+  .hero-greeting span:nth-child(3) { animation-delay: 0.4s; }
+
+  @keyframes slideIn {
+    from { opacity: 0; transform: translateY(40px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .hero-bio {
+    max-width: 340px;
+    color: var(--muted);
+    font-size: 0.9rem;
+    line-height: 1.7;
+    margin-bottom: 2.5rem;
+    animation: slideIn 0.8s cubic-bezier(0.16,1,0.3,1) 0.55s both;
+  }
+
+  .btn-say-hi {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    border: 1px solid rgba(255,255,255,0.25);
+    color: #fff;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.75rem;
+    padding: 10px 18px;
+    text-decoration: none;
+    letter-spacing: 0.03em;
+    cursor: none;
+    transition: border-color 0.3s, background 0.3s;
+    animation: slideIn 0.8s cubic-bezier(0.16,1,0.3,1) 0.7s both;
+    position: relative;
+    overflow: hidden;
+  }
+  .btn-say-hi::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(255,255,255,0.06);
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+  }
+  .btn-say-hi:hover::before { transform: translateX(0); }
+  .btn-say-hi:hover { border-color: rgba(255,255,255,0.6); }
+
+  .hero-dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.15);
+    position: absolute;
+    animation: float 5s ease-in-out infinite;
+  }
+  .hero-dot:nth-child(1) { right: 18vw; top: 55%; animation-delay: 0s; }
+  .hero-dot:nth-child(2) { right: 22vw; top: 70%; animation-delay: 1.5s; width: 6px; height: 6px; }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50%       { transform: translateY(-12px); }
+  }
+
+  /* ── GRID ── */
+  #grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: auto;
+    gap: 3px;
+    background: #0d0d0d;
+  }
+
+  .grid-item {
+    aspect-ratio: 1;
+    overflow: hidden;
+    position: relative;
+    cursor: none;
+  }
+
+  .grid-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.5s cubic-bezier(0.25,0.46,0.45,0.94), filter 0.4s;
+    filter: brightness(0.9) saturate(1.1);
+  }
+  .grid-item:hover img {
+    transform: scale(1.06);
+    filter: brightness(1) saturate(1.3);
+  }
+
+  .grid-item.wide { grid-column: span 2; aspect-ratio: 2/1; }
+  .grid-item.tall { grid-row: span 2; aspect-ratio: 1/2; }
+
+  /* Gradient placeholder tiles */
+  .tile-1 { background: linear-gradient(135deg, #ff6fd8 0%, #3813c2 100%); }
+  .tile-2 { background: conic-gradient(from 200deg, #a8edea, #fed6e3, #a8edea, #d4fc79, #a8edea); }
+  .tile-3 { background: #111; display: flex; align-items: center; justify-content: center; }
+  .tile-4 { background: #0d0d0d; display: flex; align-items: center; justify-content: center; }
+  .tile-5 { background: linear-gradient(135deg, #ffecd2, #fcb69f, #ff9a9e, #fecfef); }
+  .tile-6 { background: #0a0a0a; }
+  .tile-7 { background: #1a1a1a; display: flex; align-items: center; justify-content: center; }
+  .tile-8 { background: linear-gradient(135deg, #1d6fa4, #c74b50); }
+  .tile-9 { background: #0d0d0d; display: flex; align-items: center; justify-content: center; }
+  .tile-10 { background: linear-gradient(135deg, #43e97b, #38f9d7); }
+  .tile-11 { background: #0d0d0d; }
+  .tile-12 { background: #111; display: flex; align-items: center; justify-content: center; }
+  .tile-13 { background: linear-gradient(135deg, #a18cd1, #fbc2eb, #96fbc4); }
+  .tile-14 { background: #0d0d0d; display: flex; align-items: center; justify-content: center; }
+  .tile-15 { background: linear-gradient(160deg, #0093E9, #80D0C7); }
+
+  .tile-label {
+    font-family: 'Space Mono', monospace;
+    font-size: clamp(1rem, 3vw, 2.5rem);
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: -0.02em;
+  }
+  .tile-label.colored {
+    background: linear-gradient(135deg, #f093fb, #f5576c, #4facfe);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .tile-label.mono { color: #fff; }
+
+  .tile-apple {
+    width: 45%;
+    opacity: 0.9;
+  }
+  .apple-svg { fill: #fff; }
+
+  .nod-logo {
+    display: flex; align-items: center; gap: 4px;
+    padding: 8%;
+  }
+  .nod-n { font-family: 'Space Mono', monospace; font-size: clamp(1.5rem,4vw,3rem); font-weight: 700; color: #ff6fd8; }
+  .nod-o { font-family: 'Space Mono', monospace; font-size: clamp(1.5rem,4vw,3rem); font-weight: 700; color: #fff; }
+  .nod-d { font-family: 'Space Mono', monospace; font-size: clamp(1.5rem,4vw,3rem); font-weight: 700; color: #4facfe; }
+
+  .tile-watch {
+    width: 30%; opacity: 0.85;
+  }
+
+  .shoe-bg {
+    background: #c8c8c8;
+    display: flex; align-items: flex-end; justify-content: center;
+    overflow: hidden;
+  }
+
+  .tile-m {
+    font-family: 'Space Mono', monospace;
+    font-size: clamp(2rem, 5vw, 4rem);
+    font-weight: 700;
+    color: #fff;
+    border: 3px solid rgba(255,255,255,0.7);
+    padding: 0 8px;
+    letter-spacing: -0.05em;
+  }
+
+  .tile-32 {
+    font-family: 'Space Mono', monospace;
+    font-size: clamp(2rem, 5vw, 4.5rem);
+    font-weight: 700;
+    background: linear-gradient(135deg, #f093fb 0%, #4facfe 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .tile-clock {
+    width: 70%;
+    background: #1c1c1c;
+    border-radius: 50%;
+    aspect-ratio: 1;
+    display: flex; align-items: center; justify-content: center;
+    border: 2px solid #333;
+    position: relative;
+  }
+  .clock-center {
+    width: 8px; height: 8px; border-radius: 50%; background: #e74c3c; z-index: 2; position: relative;
+  }
+  .clock-hand {
+    position: absolute;
+    bottom: 50%; left: 50%;
+    transform-origin: bottom center;
+    background: #fff;
+    border-radius: 2px;
+  }
+  .clock-hand.hour  { width: 2px; height: 28%; margin-left: -1px; transform: rotate(90deg); }
+  .clock-hand.minute { width: 1.5px; height: 38%; margin-left: -0.75px; transform: rotate(200deg); }
+  .clock-hand.second { width: 1px; height: 42%; margin-left: -0.5px; background: #e74c3c; }
+
+  /* ── SECTIONS COMMON ── */
+  .section {
+    padding: 6rem 6vw;
+    max-width: 900px;
+  }
+
+  .section-heading {
+    font-family: 'Space Mono', monospace;
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 1rem;
+    letter-spacing: -0.02em;
+    position: relative;
+    display: inline-block;
+  }
+  .section-heading::after {
+    content: '';
+    position: absolute;
+    bottom: -4px; left: 0;
+    width: 100%; height: 2px;
+    background: rgba(255,255,255,0.15);
+  }
+
+  .section-desc {
+    color: var(--muted);
+    font-size: 0.875rem;
+    line-height: 1.7;
+    max-width: 340px;
+    margin-top: 1.2rem;
+    margin-bottom: 3rem;
+  }
+
+  /* ── WRITE ── */
+  #write { border-top: 1px solid var(--border); }
+
+  .articles-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 3px;
+    margin-bottom: 3rem;
+  }
+
+  .article-card {
+    background: #111;
+    aspect-ratio: 1;
+    position: relative;
+    overflow: hidden;
+    cursor: none;
+    transition: background 0.3s;
+  }
+  .article-card:hover { background: #181818; }
+
+  .article-icon {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0.5;
+    transition: opacity 0.3s, transform 0.3s;
+  }
+  .article-card:hover .article-icon { opacity: 0.8; transform: translate(-50%, -50%) scale(1.1); }
+
+  .article-dot {
+    width: 8px; height: 8px; border-radius: 50%; background: #e74c3c;
+    position: absolute; top: 16px; right: 16px;
+    opacity: 0;
+    transition: opacity 0.3s 0.1s;
+  }
+  .article-card:hover .article-dot { opacity: 1; }
+
+  .article-title {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    padding: 1rem;
+    font-size: 0.78rem;
+    color: var(--muted);
+    line-height: 1.4;
+    background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 100%);
+    transition: color 0.3s;
+  }
+  .article-card:hover .article-title { color: #fff; }
+
+  .icon-chevron, .icon-squares, .icon-rect {
+    width: 48px; height: 48px;
+    stroke: rgba(255,255,255,0.6);
+    fill: none;
+    stroke-width: 1.5;
+  }
+
+  .more-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px; height: 48px;
+    border-radius: 50%;
+    border: 1px solid rgba(255,255,255,0.2);
+    color: #fff;
+    font-size: 1.5rem;
+    cursor: none;
+    margin: 0 auto;
+    transition: border-color 0.3s, background 0.3s, transform 0.3s;
+  }
+  .more-btn:hover {
+    border-color: rgba(255,255,255,0.6);
+    background: rgba(255,255,255,0.05);
+    transform: rotate(90deg);
+  }
+
+  /* ── PLAY ── */
+  #play {
+    border-top: 1px solid var(--border);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .play-inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+  }
+
+  .play-left { position: relative; z-index: 2; }
+
+  .play-right {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+
+  .phone-mockup {
+    width: 200px;
+    background: #111;
+    border-radius: 36px;
+    border: 1px solid #333;
+    padding: 10px;
+    position: relative;
+    box-shadow: 0 40px 80px rgba(0,0,0,0.6);
+    animation: phonefloat 6s ease-in-out infinite;
+    z-index: 2;
+  }
+
+  @keyframes phonefloat {
+    0%, 100% { transform: translateY(0) rotate(-3deg); }
+    50%       { transform: translateY(-20px) rotate(-3deg); }
+  }
+
+  .phone-screen {
+    background: #0d0d0d;
+    border-radius: 28px;
+    overflow: hidden;
+    aspect-ratio: 9/19;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    padding: 20px;
+  }
+
+  .phone-lock {
+    font-size: 1.2rem;
+    color: rgba(255,255,255,0.5);
+    margin-bottom: 8px;
+  }
+  .phone-time {
+    font-family: 'Space Mono', monospace;
+    font-size: 2.8rem;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: -0.03em;
+    line-height: 1;
+  }
+  .phone-date {
+    font-size: 0.65rem;
+    color: rgba(255,255,255,0.5);
+    margin-top: 6px;
+    text-align: center;
+  }
+
+  .phone-glow {
+    position: absolute;
+    width: 160px; height: 160px;
+    border-radius: 50%;
+    background: conic-gradient(#a8edea, #fed6e3, #a8edea, #d4fc79);
+    filter: blur(40px);
+    opacity: 0.35;
+    bottom: -40px; right: -20px;
+    animation: glowrot 8s linear infinite;
+  }
+
+  @keyframes glowrot {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
+  }
+
+  .hand-glow {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 70% 80%, rgba(100,200,160,0.15) 0%, transparent 60%);
+    pointer-events: none;
+  }
+
+  .play-dot {
+    width: 10px; height: 10px; border-radius: 50%;
+    background: rgba(255,255,255,0.15);
+    position: absolute; right: 10px; top: 40%;
+    animation: float 4s ease-in-out infinite;
+  }
+
+  /* ── SPEAK ── */
+  #speak {
+    border-top: 1px solid var(--border);
+    max-width: 900px;
+    padding: 6rem 6vw;
+  }
+
+  .talks-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2px;
+    margin-top: 2.5rem;
+  }
+
+  .talk-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 1.25rem;
+    background: #111;
+    transition: background 0.3s;
+    cursor: none;
+  }
+  .talk-item:hover { background: #181818; }
+
+  .talk-icon {
+    width: 36px; height: 36px;
+    background: #1a1a1a;
+    border: 1px solid rgba(255,255,255,0.1);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    border-radius: 4px;
+  }
+  .talk-icon svg {
+    width: 16px; height: 16px;
+    stroke: rgba(255,255,255,0.5);
+    fill: none;
+    stroke-width: 1.5;
+  }
+
+  .talk-info {}
+  .talk-title {
+    font-size: 0.82rem;
+    color: #e8e8e8;
+    font-weight: 500;
+    line-height: 1.3;
+  }
+  .talk-venues {
+    font-size: 0.72rem;
+    color: var(--muted);
+    margin-top: 3px;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 2rem 6vw;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 0.75rem;
+    color: var(--muted);
+    font-family: 'Space Mono', monospace;
+    letter-spacing: 0.02em;
+  }
+
+  .footer-links {
+    display: flex; gap: 1rem; align-items: center;
+  }
+  .footer-links a {
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.3s;
+    cursor: none;
+  }
+  .footer-links a:hover { color: #fff; }
+  .footer-sep { opacity: 0.3; }
+
+  /* Hover interactions */
+  a, button, .grid-item, .article-card, .talk-item, .more-btn { cursor: none !important; }
+
+  /* Clock animation */
+  @keyframes rotateSecond { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+  @keyframes rotateMinute { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+  @keyframes rotateHour   { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    #grid { grid-template-columns: repeat(3, 1fr); }
+    .articles-grid { grid-template-columns: 1fr 1fr; }
+    .play-inner { grid-template-columns: 1fr; }
+    .play-right { display: none; }
+    .talks-grid { grid-template-columns: 1fr; }
+    .grid-item.wide { grid-column: span 1; aspect-ratio: 1; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Custom cursor -->
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursor-ring"></div>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-greeting">
+    <span>grüetzi.</span>
+    <span>i'm</span>
+    <span>adrian.</span>
+  </div>
+  <p class="hero-bio">I'm a designer working on the Human Interface Team at Apple. My passion is to create emotional experiences at the intersection of art, design, and AI.</p>
+  <a href="mailto:hello@azumbrunnen.me" class="btn-say-hi">→&nbsp;say hi</a>
+  <div class="hero-dot"></div>
+  <div class="hero-dot"></div>
+</section>
+
+<!-- GRID -->
+<section id="grid">
+
+  <!-- Row 1 -->
+  <div class="grid-item">
+    <div style="width:100%;height:100%;background:#0d0d0d;display:flex;align-items:center;justify-content:center;">
+      <div class="nod-logo"><span class="nod-n">n</span><span class="nod-o">o</span><span class="nod-d">D</span></div>
+    </div>
+  </div>
+  <div class="grid-item" style="background:conic-gradient(from 180deg at 50% 50%, #a8edea, #fed6e3, #fcb045, #a8edea, #96fbc4, #a8edea);"></div>
+  <div class="grid-item tile-3">
+    <div style="font-family:'Space Mono',monospace;font-size:clamp(0.6rem,1.2vw,0.9rem);color:rgba(255,255,255,0.6);text-align:right;padding:12%;line-height:1.8;">Medium<br>12 DP</div>
+  </div>
+  <div class="grid-item tile-4">
+    <!-- Apple logo SVG -->
+    <svg viewBox="0 0 814 1000" class="tile-apple" style="width:42%;opacity:0.85;" fill="white" xmlns="http://www.w3.org/2000/svg">
+      <path d="M788.1 340.9c-5.8 4.5-108.2 62.2-108.2 190.5 0 148.4 130.3 200.9 134.2 202.2-.6 3.2-20.7 71.9-68.7 141.9-42.8 61.6-87.5 123.1-155.5 123.1s-85.5-39.5-164-39.5c-76 0-103.7 40.8-165.9 40.8s-105-37.5-155.5-127.4C46.5 714.9 0 616.5 0 522.3 0 340.9 117.5 244.6 233.1 244.6c61.6 0 113.3 40.8 152.5 40.8 37.5 0 96.9-43.1 165.3-43.1 26.7 0 119.7 2.6 178.4 96.6zm-234-181.5c28.1-36.4 48.3-87.5 48.3-138.6 0-7.1-.6-14.3-1.9-20.1-45.8 1.7-99.1 30.6-131.7 73.7-25.1 28.4-50.8 79.5-50.8 131.9 0 8.4 1.3 16.8 1.9 19.4 3.2.6 8.4 1.3 13.6 1.3 41.5 0 93.5-27.5 120.6-67.6z"/>
+    </svg>
+  </div>
+  <div class="grid-item" style="background:linear-gradient(135deg,#ffecd2,#fcb69f,#ff9a9e,#fecfef,#a18cd1);"></div>
+
+  <!-- Row 2 -->
+  <div class="grid-item shoe-bg" style="background:#b0b0b0;">
+    <div style="width:100%;height:100%;background:linear-gradient(to bottom, #ccc 0%, #aaa 100%);"></div>
+  </div>
+  <div class="grid-item tile-7">
+    <div style="font-family:'Space Mono',monospace;font-size:clamp(0.9rem,2.5vw,1.8rem);color:rgba(255,255,255,0.55);letter-spacing:0.05em;padding:10%;">Ć</div>
+  </div>
+  <div class="grid-item wide" style="background:#0d0d0d;display:flex;align-items:center;justify-content:center;">
+    <div style="font-family:'Space Mono',monospace;font-size:clamp(2.5rem,7vw,6rem);font-weight:700;letter-spacing:-0.05em;">
+      <span style="background:linear-gradient(135deg,#4facfe,#f093fb,#f5576c);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">m</span>
+    </div>
+  </div>
+  <div class="grid-item tile-9">
+    <div style="width:100%;height:100%;background:#111;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:6px;">
+      <div style="font-size:0.6rem;color:rgba(255,255,255,0.4);font-family:'Space Mono',monospace;">Hi, how can I help?</div>
+      <div style="width:60%;height:2px;background:linear-gradient(to right,#4facfe,#f093fb);border-radius:1px;"></div>
+    </div>
+  </div>
+  <div class="grid-item" style="background:linear-gradient(135deg,#43e97b,#38f9d7,#00d2ff);"></div>
+
+  <!-- Row 3 extra -->
+  <div class="grid-item tile-11" style="background:#111;display:flex;align-items:center;justify-content:center;">
+    <div style="font-family:'Space Mono',monospace;font-size:clamp(1.2rem,2.8vw,2rem);font-weight:700;color:rgba(255,255,255,0.85);border:2px solid rgba(255,255,255,0.6);padding:2px 8px;">M</div>
+  </div>
+  <div class="grid-item tile-12">
+    <div style="width:100%;height:100%;background:#0d0d0d;display:flex;align-items:center;justify-content:center;">
+      <div style="font-family:'Space Mono',monospace;font-size:clamp(1.5rem,4vw,3.5rem);font-weight:700;background:linear-gradient(135deg,#f093fb,#4facfe);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">32</div>
+    </div>
+  </div>
+  <div class="grid-item" style="background:#111;display:flex;align-items:center;justify-content:center;">
+    <!-- Clock face -->
+    <div class="tile-clock" id="clock">
+      <div class="clock-center"></div>
+      <div class="clock-hand hour" id="hour-hand"></div>
+      <div class="clock-hand minute" id="minute-hand"></div>
+      <div class="clock-hand second" id="second-hand"></div>
+    </div>
+  </div>
+  <div class="grid-item wide" style="background:conic-gradient(from 120deg at 50% 50%,#a8edea,#96fbc4,#d4fc79,#fed6e3,#ffecd2,#a8edea);"></div>
+
+  <!-- Row 4 -->
+  <div class="grid-item" style="background:#0d0d0d;display:flex;align-items:center;justify-content:center;">
+    <div style="font-family:'Space Mono',monospace;font-size:0.6rem;color:rgba(255,255,255,0.3);text-align:center;">Ambient</div>
+  </div>
+  <div class="grid-item" style="background:linear-gradient(135deg,#0093E9,#80D0C7,#00cdac);"></div>
+
+</section>
+
+<!-- WRITE -->
+<section id="write" class="section reveal">
+  <h2 class="section-heading">Write</h2>
+  <p class="section-desc">Writing is an essential part of my process. My essays were featured on FastCompany, TNW, Smashing Magazine, and Medium. You can find some of my latest writing below.</p>
+
+  <div class="articles-grid">
+    <div class="article-card">
+      <div class="article-icon">
+        <svg class="icon-chevron" viewBox="0 0 48 48"><polyline points="12,18 24,30 36,18"/></svg>
+      </div>
+      <div class="article-title">How Apple beat Swiss watchmakers at their own game</div>
+    </div>
+    <div class="article-card">
+      <div class="article-icon">
+        <svg class="icon-squares" viewBox="0 0 48 48">
+          <rect x="10" y="10" width="16" height="16" rx="2"/>
+          <rect x="22" y="22" width="16" height="16" rx="2"/>
+        </svg>
+      </div>
+      <div class="article-dot"></div>
+      <div class="article-title">My chatbot is dead</div>
+    </div>
+    <div class="article-card">
+      <div class="article-icon">
+        <svg class="icon-rect" viewBox="0 0 48 48">
+          <rect x="8" y="14" width="32" height="20" rx="3"/>
+        </svg>
+      </div>
+      <div class="article-dot"></div>
+      <div class="article-title">The rise of Anti-notifications</div>
+    </div>
+  </div>
+
+  <div class="more-btn" title="More articles">+</div>
+</section>
+
+<!-- PLAY -->
+<section id="play" class="section" style="max-width:100%;padding:6rem 6vw; border-top: 1px solid var(--border);">
+  <div class="play-inner" style="max-width:860px;">
+    <div class="play-left reveal">
+      <h2 class="section-heading">Play</h2>
+      <p class="section-desc">I'm driven by curiosity, mixing analog and digital media to develop novel visual expressions for wallpapers and my work on AI based systems.</p>
+      <a href="#" class="btn-say-hi" style="margin-top:0.5rem;">→&nbsp;explore</a>
+    </div>
+    <div class="play-right reveal" style="animation-delay:0.2s;">
+      <div class="phone-glow"></div>
+      <div class="hand-glow"></div>
+      <div class="phone-mockup">
+        <div class="phone-screen">
+          <div class="phone-lock">&#x1F512;</div>
+          <div class="phone-time" id="phone-time">00:49</div>
+          <div class="phone-date" id="phone-date">Tuesday, June 30</div>
+        </div>
+      </div>
+      <div class="play-dot"></div>
+    </div>
+  </div>
+</section>
+
+<!-- SPEAK -->
+<section id="speak" class="reveal">
+  <div style="max-width:860px;padding:6rem 6vw;">
+    <div style="position:relative;">
+      <h2 class="section-heading">Speak</h2>
+      <div class="hero-dot" style="right:8vw;top:20px;"></div>
+    </div>
+    <p class="section-desc" style="margin-top:1.2rem;">I'm passionate about sharing knowledge and meeting new people. I've had the opportunity to share ideas at various events around the globe.</p>
+
+    <div class="talks-grid">
+      <div class="talk-item">
+        <div class="talk-icon">
+          <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="13" rx="2"/><polyline points="8,21 12,17 16,21"/></svg>
+        </div>
+        <div class="talk-info">
+          <div class="talk-title">Conversational UI</div>
+          <div class="talk-venues">UX Tokyo, Awwwards</div>
+        </div>
+      </div>
+      <div class="talk-item">
+        <div class="talk-icon">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/></svg>
+        </div>
+        <div class="talk-info">
+          <div class="talk-title">Designing for attention</div>
+          <div class="talk-venues">Wix Tel-Aviv, UX Salon</div>
+        </div>
+      </div>
+      <div class="talk-item">
+        <div class="talk-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+        </div>
+        <div class="talk-info">
+          <div class="talk-title">Meaningful Motion</div>
+          <div class="talk-venues">Amuse, Awwwards, Push</div>
+        </div>
+      </div>
+      <div class="talk-item">
+        <div class="talk-icon">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><line x1="12" y1="3" x2="12" y2="9"/><line x1="12" y1="15" x2="12" y2="21"/><line x1="3" y1="12" x2="9" y2="12"/><line x1="15" y1="12" x2="21" y2="12"/></svg>
+        </div>
+        <div class="talk-info">
+          <div class="talk-title">Designing choice</div>
+          <div class="talk-venues">Push IO, Amuse, Web Expo</div>
+        </div>
+      </div>
+      <div class="talk-item">
+        <div class="talk-icon">
+          <svg viewBox="0 0 24 24"><polyline points="4,17 4,4 20,4 20,17"/><polyline points="1,17 23,17"/></svg>
+        </div>
+        <div class="talk-info">
+          <div class="talk-title">Rethinking Content Creation</div>
+          <div class="talk-venues">Amuse, Awwwards</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-links">
+    <span style="font-size:0.9rem;opacity:0.5;">&#9675;</span>
+    <span class="footer-sep">·</span>
+    <a href="#">twitter</a>
+    <span class="footer-sep">·</span>
+    <a href="#">linkedIn</a>
+  </div>
+  <span>made in Zurich</span>
+</footer>
+
+<script>
+  // Custom cursor
+  const cursor = document.getElementById('cursor');
+  const ring = document.getElementById('cursor-ring');
+  let mx = 0, my = 0, rx = 0, ry = 0;
+  document.addEventListener('mousemove', e => {
+    mx = e.clientX; my = e.clientY;
+    cursor.style.left = mx + 'px';
+    cursor.style.top  = my + 'px';
+  });
+  function animRing() {
+    rx += (mx - rx) * 0.12;
+    ry += (my - ry) * 0.12;
+    ring.style.left = rx + 'px';
+    ring.style.top  = ry + 'px';
+    requestAnimationFrame(animRing);
+  }
+  animRing();
+
+  document.querySelectorAll('a, button, .grid-item, .article-card, .talk-item, .more-btn').forEach(el => {
+    el.addEventListener('mouseenter', () => {
+      cursor.style.transform = 'translate(-50%,-50%) scale(2)';
+      ring.style.width = '56px'; ring.style.height = '56px';
+      ring.style.borderColor = 'rgba(255,255,255,0.6)';
+    });
+    el.addEventListener('mouseleave', () => {
+      cursor.style.transform = 'translate(-50%,-50%) scale(1)';
+      ring.style.width = '36px'; ring.style.height = '36px';
+      ring.style.borderColor = 'rgba(255,255,255,0.4)';
+    });
+  });
+
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+  }, { threshold: 0.12 });
+  reveals.forEach(r => observer.observe(r));
+
+  // Live clock hands
+  function updateClock() {
+    const now = new Date();
+    const s = now.getSeconds(), m = now.getMinutes(), h = now.getHours() % 12;
+    const sd = s * 6, md = m * 6 + s * 0.1, hd = h * 30 + m * 0.5;
+    const sh = document.getElementById('second-hand');
+    const mh = document.getElementById('minute-hand');
+    const hh = document.getElementById('hour-hand');
+    if (sh) sh.style.transform = `rotate(${sd}deg)`;
+    if (mh) mh.style.transform = `rotate(${md}deg)`;
+    if (hh) hh.style.transform = `rotate(${hd}deg)`;
+  }
+  updateClock();
+  setInterval(updateClock, 1000);
+
+  // Live phone time
+  function updatePhone() {
+    const now = new Date();
+    const hh = String(now.getHours()).padStart(2,'0');
+    const mm = String(now.getMinutes()).padStart(2,'0');
+    const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+    const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+    const pt = document.getElementById('phone-time');
+    const pd = document.getElementById('phone-date');
+    if (pt) pt.textContent = hh + ':' + mm;
+    if (pd) pd.textContent = days[now.getDay()] + ', ' + months[now.getMonth()] + ' ' + now.getDate();
+  }
+  updatePhone();
+  setInterval(updatePhone, 10000);
+
+  // Grid item stagger reveal
+  document.querySelectorAll('.grid-item').forEach((item, i) => {
+    item.style.opacity = '0';
+    item.style.transition = `opacity 0.5s ease ${i * 0.04}s`;
+    setTimeout(() => { item.style.opacity = '1'; }, 300 + i * 40);
+  });
+</script>
+</body>
+</html>
